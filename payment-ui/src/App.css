@@ -430,7 +430,7 @@ select:focus {
   font-size: 1.12em;
 }
 
-/* Admin toggle button */
+/* Admin toggle button - custom */
 .admin-toggle-btn {
   background: #fff;
   color: #004e92;
@@ -440,8 +440,22 @@ select:focus {
   cursor: pointer;
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.3s ease;
 }
-.admin-toggle-btn:hover { background: #f3fbff; }
+.admin-toggle-btn:hover {
+  background: #f3fbff;
+}
+
+/* Admin section for payment display */
+.admin-section {
+  max-width: 700px;
+  margin: 0 auto 30px;
+  background: #f0f8ff;
+  border: 1px solid #a2c4f7;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 12px rgba(0,78,146,0.25);
+}
 
 /* Table display styles for admin view */
 .table-container { overflow-x: auto; }

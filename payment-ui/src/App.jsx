@@ -8,7 +8,7 @@ function App() {
   const [user, setUser] = useState({ name: "", email: "", address: "" });
   const [plan, setPlan] = useState("");
   const [paymentMethod, setPaymentMethod] = useState(""); // 'upi' or 'paypal'
-  const [paymentStage, setPaymentStage] = useState("choose"); // NEW: 'choose' | 'upi' | 'paypal'
+  const [paymentStage, setPaymentStage] = useState("choose");
   const [screenshot, setScreenshot] = useState(null);
   const [upiId, setUpiId] = useState("");
   const [upiRef, setUpiRef] = useState("");
@@ -19,15 +19,24 @@ function App() {
   const [paymentSubmitted, setPaymentSubmitted] = useState(false);
   const [timer, setTimer] = useState(300);
 
-  // User info handlers
-  const handleUserChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  // Admin Email
+  const adminEmail = "m.r.moharana789@gmail.com";
+
+  // For simple admin login prompt
+  const [showAdminPrompt, setShowAdminPrompt] = useState(false);
+  const [adminPromptEmail, setAdminPromptEmail] = useState("");
+  const [adminPromptError, setAdminPromptError] = useState("");
+
+  // User info
+  const handleUserChange = (e) =>
+    setUser({ ...user, [e.target.name]: e.target.value });
 
   const handleUserSubmit = (e) => {
     e.preventDefault();
     setStep(2);
   };
 
-  // Subscription plan handlers
+  // Plan
   const handlePlanChange = (e) => setPlan(e.target.value);
 
   const handlePlanSubmit = (e) => {
@@ -44,7 +53,7 @@ function App() {
   // Payment stage logic
   const handlePayOption = (method) => {
     setPaymentMethod(method);
-    setPaymentStage(method); // go to 'upi' or 'paypal' details
+    setPaymentStage(method);
     setPaymentSubmitted(false);
     if (method === "paypal") {
       setTimer(300);
@@ -56,15 +65,12 @@ function App() {
 
   // Back navigation logic
   const handleStepBack = () => {
-    // If in 3rd step (Make Payment)
     if (step === 3) {
       if (paymentStage === "choose") {
-        // Payment method select: go back to step 2 (subscription)
         setStep(2);
         setPaymentStage("choose");
         setPaymentMethod("");
       } else if (paymentStage === "upi" || paymentStage === "paypal") {
-        // Payment details: go back to payment method selection (not subscription page)
         setPaymentStage("choose");
         setPaymentMethod("");
       }
@@ -73,9 +79,10 @@ function App() {
     }
   };
 
-  // Handle payment form submissions
+  // Payment screenshot/file
   const handleFileChange = (e) => setScreenshot(e.target.files[0]);
 
+  // Submit payment logic
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -86,7 +93,8 @@ function App() {
       formData.append("plan", plan);
       formData.append("paymentMethod", paymentMethod);
 
-      if (paymentMethod === "paypal" && screenshot) formData.append("screenshot", screenshot);
+      if (paymentMethod === "paypal" && screenshot)
+        formData.append("screenshot", screenshot);
       if (paymentMethod === "upi") {
         formData.append("upiId", upiId);
         formData.append("upiRef", upiRef);
@@ -113,7 +121,12 @@ function App() {
   };
 
   useEffect(() => {
-    if (paymentMethod === "paypal" && paymentStage === "paypal" && timer > 0 && !paymentSubmitted) {
+    if (
+      paymentMethod === "paypal" &&
+      paymentStage === "paypal" &&
+      timer > 0 &&
+      !paymentSubmitted
+    ) {
       const countdown = setInterval(() => setTimer((t) => t - 1), 1000);
       return () => clearInterval(countdown);
     }
@@ -136,10 +149,31 @@ function App() {
     }
   };
 
-  const handleTogglePayments = () => {
-    const next = !showPayments;
-    setShowPayments(next);
-    if (next) fetchPayments();
+  // Admin icon button click logic
+  const handleAdminIconClick = () => {
+    setShowAdminPrompt(true);
+    setAdminPromptEmail("");
+    setAdminPromptError("");
+  };
+
+  // Handle admin prompt login form
+  const handleAdminPromptSubmit = (e) => {
+    e.preventDefault();
+    if (adminPromptEmail.trim().toLowerCase() === adminEmail) {
+      setShowPayments(true);
+      setShowAdminPrompt(false);
+      fetchPayments();
+    } else {
+      setAdminPromptError("Access denied. You are not an admin.");
+    }
+  };
+
+  // Hide admin table on Logout
+  const handleAdminLogout = () => {
+    setShowPayments(false);
+    setShowAdminPrompt(false);
+    setAdminPromptEmail("");
+    setAdminPromptError("");
   };
 
   const formatTime = (t) => {
@@ -171,18 +205,56 @@ function App() {
               <p>Your trusted platform for fast and secure payments</p>
             </div>
             <div>
-              <button className="admin-toggle-btn" onClick={handleTogglePayments}>
+              <button
+                className="admin-toggle-btn"
+                onClick={handleAdminIconClick}
+                style={{ display: "flex", alignItems: "center", gap: "7px" }}
+              >
+                <span role="img" aria-label="admin" style={{ fontSize: "1.2em" }}>
+                  🛡️
+                </span>
                 {showPayments ? "Hide Payments" : "View Payments (Admin)"}
               </button>
             </div>
           </div>
         </header>
 
+        {/* Admin login modal */}
+        {showAdminPrompt && (
+          <div className="admin-login-overlay">
+            <div className="admin-login-modal">
+              <h3>
+                Admin Login <span style={{ fontSize: "1em" }}>🛡️</span>
+              </h3>
+              <form onSubmit={handleAdminPromptSubmit}>
+                <input
+                  type="email"
+                  placeholder="Enter Admin Email"
+                  value={adminPromptEmail}
+                  onChange={(e) => setAdminPromptEmail(e.target.value)}
+                  required
+                />
+                <button type="submit" className="submit-btn" style={{ marginTop: '10px' }}>
+                  Login
+                </button>
+              </form>
+              {adminPromptError && <p className="login-error">{adminPromptError}</p>}
+            </div>
+          </div>
+        )}
+
         <main className="main-container">
           {/* Admin payments table (toggle) */}
-          {showPayments && (
+          {showPayments && adminPromptEmail.trim().toLowerCase() === adminEmail && (
             <section className="section admin-section">
-              <h2>📋 Payments</h2>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h2>📋 Payments (Admin View)</h2>
+                <button onClick={handleAdminLogout} style={{
+                  background: "#db0606", color: "#fff", borderRadius: "6px", border: "none", padding: "8px 14px", fontWeight: "bold", cursor: "pointer"
+                }}>
+                  Logout
+                </button>
+              </div>
               {loadingPayments ? (
                 <p>Loading payments...</p>
               ) : paymentsError ? (
@@ -222,13 +294,14 @@ function App() {
                 </label>
                 <label>
                   Address:
-                  <textarea
+                  <input
                     name="address"
+                    type="address"
                     placeholder="Enter your address"
                     value={user.address}
                     onChange={handleUserChange}
                     required
-                  ></textarea>
+                  />
                 </label>
                 <button className="pay-btn effect-ripple" type="submit">
                   Continue
@@ -257,9 +330,7 @@ function App() {
                       <option value="lifetime">
                         💎 Lifetime – $1000 (One time)
                       </option>
-                      <option value="yearly">
-                        💎 Yearly – $100/year
-                      </option>
+                      <option value="yearly">💎 Yearly – $100/year</option>
                     </select>
                   </div>
                 </label>
@@ -302,14 +373,19 @@ function App() {
           {step === 3 && (
             <section className={getSectionClass(3)}>
               <h2>💰 Make Payment</h2>
-              <button
-                type="button"
-                className="back-btn effect-ripple"
-                onClick={handleStepBack}
-                style={{ marginBottom: 8 }}
-              >
-                ← Back
-              </button>
+              {
+                !paymentSubmitted && (
+                  <button
+                    type="button"
+                    className="back-btn effect-ripple"
+                    onClick={handleStepBack}
+                    style={{ marginBottom: 8 }}
+                  >
+                    ← Back
+                  </button>
+                )
+              }
+
               {/* Stage: payment method selection */}
               {paymentStage === "choose" && !paymentSubmitted && (
                 <>
@@ -383,8 +459,8 @@ function App() {
                         any UPI app (PhonePe, Google Pay, Paytm, etc.).
                       </li>
                       <li>
-                        Enter your UPI ID and the <b>Transaction Reference
-                        Number</b> below.
+                        Enter your UPI ID and the <b>Transaction Reference Number</b>{" "}
+                        below.
                       </li>
                     </ul>
                   </div>
@@ -438,7 +514,6 @@ function App() {
                   </p>
                 </div>
               )}
-
             </section>
           )}
         </main>
