@@ -42,7 +42,7 @@ body {
 }
 @keyframes headerDrop {
   from { opacity: 0; transform: translateY(-30px); }
-  to   { opacity: 1; transform: translateY(0);}
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .header h1 {
@@ -81,8 +81,8 @@ body {
   animation: floatUp 1.2s ease;
 }
 @keyframes floatUp {
-  from { opacity: 0; transform: scale(0.97) translateY(16px);}
-  to   { opacity: 1;   transform: scale(1) translateY(0);}
+  from { opacity: 0; transform: scale(0.97) translateY(16px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 .single-section {
   width: 100%;
@@ -203,8 +203,8 @@ select:focus {
   pointer-events: none;
 }
 @keyframes rippleAnim {
-  from {width:0; height:0; opacity:.5;}
-  to   {width:220px; height:220px; opacity:0;}
+  from { width: 0; height: 0; opacity: .5; }
+  to { width: 220px; height: 220px; opacity: 0; }
 }
 
 .plan-details {
@@ -305,8 +305,8 @@ select:focus {
   font-size: 1.33rem;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(14px);}
-  to   { opacity: 1; transform: translateY(0);}
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* FOOTER - full bleed */
@@ -388,29 +388,7 @@ select:focus {
   margin-top: 10px;
 }
 
-.dropdown-wrapper {
-  position: relative;
-}
-.plan-dropdown {
-  margin-top: 7px;
-  padding: 10px 15px;
-  font-size: 1.1rem;
-  border: 1px solid #bdd3ee;
-  border-radius: 7px;
-  background: #f7fbff /* fallback */;
-  background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6 8L0.803847 0.5L11.1962 0.5L6 8Z' fill='%230099d7'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 18px 10px;
-  box-shadow: 0 1px 4px 0 #e8f1fc;
-  transition: border 0.16s;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-.plan-dropdown:focus {
-  border: 1.5px solid #008cff;
-}
+/* REMOVED .dropdown-wrapper AND .plan-dropdown STYLES TO USE SIMPLE SELECT */
 
 .plan-amount-box {
   margin-top: 15px;

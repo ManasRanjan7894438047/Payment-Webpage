@@ -139,7 +139,8 @@ function App() {
     try {
       const res = await fetch("http://localhost:5000/api/payments");
       const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.message || "Failed to fetch payments");
+      if (!res.ok || !data.ok)
+        throw new Error(data.message || "Failed to fetch payments");
       setPayments(Array.isArray(data.payments) ? data.payments : []);
     } catch (err) {
       console.error("Failed to load payments:", err);
@@ -317,22 +318,21 @@ function App() {
               <form className="form-grid" onSubmit={handlePlanSubmit}>
                 <label>
                   Choose your plan:
-                  <div className="dropdown-wrapper">
-                    <select
-                      className="plan-dropdown"
-                      value={plan}
-                      onChange={handlePlanChange}
-                      required
-                    >
-                      <option value="" disabled>
-                        🔽 Select a plan (Required)
-                      </option>
-                      <option value="lifetime">
-                        💎 Lifetime – $1000 (One time)
-                      </option>
-                      <option value="yearly">💎 Yearly – $100/year</option>
-                    </select>
-                  </div>
+                  {/* Removed dropdown-wrapper class */}
+                  <select
+                    // Removed plan-dropdown class, using default select styling
+                    value={plan}
+                    onChange={handlePlanChange}
+                    required
+                  >
+                    <option value="" disabled>
+                      Select a plan (Required)
+                    </option>
+                    <option value="lifetime">
+                      💎 Lifetime – $1000 (One time)
+                    </option>
+                    <option value="yearly">💎 Yearly – $100/year</option>
+                  </select>
                 </label>
                 <div className="plan-amount-box">
                   {plan === "lifetime" && (
