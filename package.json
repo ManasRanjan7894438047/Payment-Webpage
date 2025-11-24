@@ -15,6 +15,7 @@
     "dotenv": "^17.2.3",
     "emailjs-com": "^3.2.0",
     "express": "^5.1.0",
+    "gh-pages": "^6.3.0",
     "mongoose": "^8.19.3",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.10"
