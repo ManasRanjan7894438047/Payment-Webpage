@@ -288,7 +288,7 @@ function App() {
             }}
           >
             <div>
-              <h1>💳 Secure Payment Portal</h1>
+              <h1>💳 Secure Payment Portal...</h1>
               <p>Your trusted platform for fast and secure payments</p>
             </div>
             <div>
