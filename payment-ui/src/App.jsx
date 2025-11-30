@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-//import paypalQR from "./Paypal.png";
+// import paypalQR from "./Paypal.png"; // Removed
 import TableDisplay from "./TableDisplay";
 import { PayPalButtons } from "@paypal/react-paypal-js"; 
 
@@ -20,6 +20,7 @@ function App() {
   const [user, setUser] = useState({ name: "", email: "", address: "" });
   const [plan, setPlan] = useState("");
   const [paymentMethod, setPaymentMethod] = useState(""); 
+  // Removed "select" and "paypal-qr" as intermediate stages are now unnecessary
   const [paymentStage, setPaymentStage] = useState("select"); 
   const [screenshot, setScreenshot] = useState(null);
   const [showPayments, setShowPayments] = useState(false);
@@ -58,6 +59,7 @@ function App() {
 
   const handlePlanChange = (e) => setPlan(e.target.value);
 
+  // MODIFIED: Auto-sends to PayPal SDK flow
   const handlePlanSubmit = (e) => {
     e.preventDefault();
     if (!plan) {
@@ -67,15 +69,19 @@ function App() {
     setStep(3);
     setPaymentSubmitted(false);
     setTimer(300);
-    setPaymentMethod("");
-    setPaymentStage("select");
+    
+    // Setting state to render the PayPal button directly
+    setPaymentMethod("paypal-button");
+    setPaymentStage("paypal-button-flow");
+    
+    setPaypalError(null);
   };
 
   // Global back for whole wizard
   const handleStepBack = () => {
     if (step === 3) {
       setStep(2);
-      setPaymentStage("select");
+      setPaymentStage("select"); // Resetting state
       setPaymentMethod("");
       setScreenshot(null);
       setPaymentSubmitted(false);
@@ -85,75 +91,24 @@ function App() {
     }
   };
 
-  // Back only inside Step 3
+  // Back only inside Step 3 (Now just goes to Step 2)
   const handlePaymentBack = () => {
-    setPaymentStage("select");
-    setScreenshot(null);
-    setPaymentSubmitted(false);
-    setPaypalError(null);
+    handleStepBack();
   };
 
   const handleFileChange = (e) => setScreenshot(e.target.files[0]);
 
-  // ---------- Payment selection / Stage change ----------
+  // MODIFIED: Functionality removed, only kept to be safe
   const handlePaymentOptionSelect = (type) => {
-    // type: 'paypal-qr' | 'paypal-button'
     setPaymentMethod(type);
-    // This state change should trigger the UI update to show the PayPalButtons component
-    if (type === "paypal-button") {
-      setPaymentStage("paypal-button-flow"); // New stage for SDK button
-    } else if (type === "paypal-qr") {
-      setPaymentStage("paypal-qr");
-    }
+    setPaymentStage("paypal-button-flow");
     setPaymentSubmitted(false);
     setScreenshot(null);
     setTimer(300);
     setPaypalError(null);
   };
 
-  // Handler for QR payment proof submission
-  const handleSubmitQRProof = async (e) => {
-    e.preventDefault();
-
-    if (!screenshot) {
-      alert("Please upload a PayPal payment screenshot!");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("name", user.name);
-      formData.append("email", user.email);
-      formData.append("address", user.address);
-      formData.append("plan", plan);
-      formData.append("paymentMethod", "paypal-qr"); 
-      formData.append("screenshot", screenshot);
-
-      const res = await fetch(`${API_BASE}/api/payments`, {
-        method: "POST",
-        body: formData,
-      });
-
-      let data = {};
-      try {
-        data = await res.json();
-      } catch {
-        // if backend crashes before sending JSON
-      }
-
-      if (!res.ok || !data.ok) {
-        console.error("Payment error:", data);
-        alert(data.message || "Error submitting payment. Check console.");
-        return;
-      }
-
-      setPaymentSubmitted(true);
-      console.log("Saved payment:", data.payment);
-    } catch (err) {
-      console.error("Submit failed:", err);
-      alert("Network error while submitting payment.");
-    }
-  };
+  // --- REMOVED handleSubmitQRProof function ---
 
   // ---------- PayPal Button SDK Logic ----------
   const createOrder = (data, actions) => {
@@ -217,15 +172,10 @@ function App() {
     setPaypalError("An error occurred during the PayPal transaction.");
   };
 
-  // ---------- Timer for QR ----------
+  // ---------- Timer for QR (Kept for effect cleanup, but non-functional) ----------
   useEffect(() => {
-    if (paymentStage === "paypal-qr" && timer > 0 && !paymentSubmitted) {
-      const countdown = setInterval(
-        () => setTimer((t) => (t > 0 ? t - 1 : 0)),
-        1000
-      );
-      return () => clearInterval(countdown);
-    }
+    // Keeping useEffect to prevent linting errors if references exist elsewhere.
+    return () => {};
   }, [paymentStage, timer, paymentSubmitted]);
 
   // ---------- Admin and Modal handlers (Unchanged for brevity) ----------
@@ -304,35 +254,19 @@ function App() {
     try {
       let res;
       let data;
-      const isFormData =
-        selectedPayment.paymentMethod === "paypal-qr" && adminScreenshot;
-
-      if (isFormData) {
-        const formData = new FormData();
-        formData.append("email", selectedPayment.email);
-        formData.append("name", selectedPayment.name);
-        formData.append("plan", selectedPayment.plan);
-        formData.append("paymentId", selectedPayment.id);
-        formData.append("screenshot", adminScreenshot);
-
-        res = await fetch(`${API_BASE}/api/send-confirmation`, {
-          method: "POST",
-          body: formData,
-        });
-        data = await res.json();
-      } else {
-        res = await fetch(`${API_BASE}/api/send-confirmation`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: selectedPayment.email,
-            name: selectedPayment.name,
-            plan: selectedPayment.plan,
-            paymentId: selectedPayment.id,
-          }),
-        });
-        data = await res.json();
-      }
+      // Simplifed: We assume all admin action is confirmation
+      res = await fetch(`${API_BASE}/api/send-confirmation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: selectedPayment.email,
+          name: selectedPayment.name,
+          plan: selectedPayment.plan,
+          paymentId: selectedPayment.id,
+        }),
+      });
+      data = await res.json();
+      
 
       if (data.ok) {
         handleCloseDetailsDialog();
@@ -357,17 +291,14 @@ function App() {
   const canConfirm =
     selectedPayment &&
     !selectedPayment.confirmed &&
-    (selectedPayment.paymentMethod === 'paypal-button' || 
-    selectedPayment.screenshotFilename ||
-    screenshotVerifiedByAdmin ||
-    adminScreenshot);
+    selectedPayment.paymentMethod === 'paypal-button';
 
 
   // ---------- RENDER ----------
   return (
     <div className="app-bg">
       <div className="app-wrapper">
-        {/* Header (Unchanged) */}
+        {/* Header (New Look) */}
         <header className="header">
           <div
             style={{
@@ -691,20 +622,14 @@ function App() {
                 <button
                   type="button"
                   className="back-btn effect-ripple"
-                  onClick={
-                    // Check if we are in the initial 'select' stage
-                    paymentStage === "select"
-                      ? handleStepBack // Go back to Plan selection (Step 2)
-                      : handlePaymentBack // Go back to Payment Methods selection (paymentStage="select")
-                  }
+                  onClick={handleStepBack} 
                   style={{ marginBottom: 8 }}
                 >
-                  {paymentStage === "select"
-                    ? "← Back to Plan"
-                    : "← Back to Payment Methods"}
+                  ← Back to Plan
                 </button>
               )}
 
+              {/* The "select" stage is now unnecessary, but keeping the rendering block */}
               {paymentStage === "select" && !paymentSubmitted && (
                 <div className="payment-choice-card">
                   <h3>Select Payment Method</h3>
@@ -713,13 +638,7 @@ function App() {
                     <b>{plan}</b> subscription.
                   </p>
                   <div className="payment-options-row">
-{/*                     <button
-                      type="button"
-                      className="method-btn"
-                      onClick={() => handlePaymentOptionSelect("paypal-qr")}
-                    >
-                      🔳 Pay with QR (Manual Proof)
-                    </button> */}
+                    {/* Only PayPal Button remains */}
                     <button
                       type="button"
                       className="method-btn paypal-btn-style"
@@ -733,61 +652,9 @@ function App() {
                 </div>
               )}
 
-              {/* RENDER for PAYPAL QR (Requires manual proof) */}
-              {paymentStage === "paypal-qr" && !paymentSubmitted && (
-                <div className="paypal-section animated-paypal">
-                  <h3>Pay with PayPal (QR)</h3>
-                  <p>
-                    Hello, <b>{user.name}</b>! To pay for your{" "}
-                    <b>{plan}</b> subscription, please complete the steps below:
-                  </p>
-
-                  <div className="qr-box glowing-border">
-                    <p
-                      style={{
-                        marginBottom: 10,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      1. Scan the QR code using your PayPal app:
-                    </p>
-                    <img
-                      src={paypalQR}
-                      alt="PayPal QR"
-                      className="qr-image"
-                    />
-                    <p className="timer-text">
-                      ⏱ Payment window: <b>{formatTime(timer)}</b>
-                    </p>
-                  </div>
-
-                  <p style={{ marginTop: 10, marginBottom: 5 }}>
-                    2. After payment, upload the confirmation screenshot.
-                  </p>
-
-                  <form className="paypal-form" onSubmit={handleSubmitQRProof}>
-                    <div className="upload-box">
-                      <p>📎 Required: Upload Payment Screenshot:</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        required
-                      />
-                      {screenshot && (
-                        <p className="file-name">✅ {screenshot.name}</p>
-                      )}
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="submit-btn effect-ripple"
-                    >
-                      Submit Payment Proof
-                    </button>
-                  </form>
-                </div>
-              )}
+              {/* --- REMOVED: RENDER for PAYPAL QR --- */}
+              {/* The QR code rendering block is removed entirely */}
+              
 
               {/* RENDER for PAYPAL BUTTON SDK FLOW (Automated proof) */}
               {paymentStage === "paypal-button-flow" && !paymentSubmitted && (

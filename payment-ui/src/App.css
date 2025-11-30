@@ -9,10 +9,10 @@ body {
 .app-bg {
   min-height: 100vh;
   width: 100vw;
-  /* Updated gradient for more depth */
-  background: linear-gradient(120deg, #f5f7fa 60%, #e6eeff 100%);
-  background-size: 200% 200%; /* Make the gradient larger than the viewport */
-  animation: bgMove 25s ease-in-out infinite alternate; /* Slower animation */
+  /* PROFESSIONAL BACKGROUND: Light Gray to subtle Blue */
+  background: linear-gradient(120deg, #f0f4f8 60%, #e6eef5 100%);
+  background-size: 200% 200%; 
+  animation: bgMove 25s ease-in-out infinite alternate; 
 }
 @keyframes bgMove {
   0% {
@@ -34,11 +34,12 @@ body {
 /* --- Fixed Header --- */
 .header {
   width: 100%;
-  background: linear-gradient(90deg, #004e92, #000428 80%);
+  /* DEEP NAVY GRADIENT */
+  background: linear-gradient(90deg, #002147, #103358 80%);
   color: #fff;
   text-align: center;
   padding: 35px 20px 30px 20px;
-  box-shadow: 0 4px 24px 0px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 4px 24px 0px rgba(0, 0, 0, 0.4); /* Stronger shadow for weight */
   position: relative;
   animation: headerDrop 0.8s cubic-bezier(0.23, 0.71, 0.58, 1.13);
 }
@@ -84,7 +85,7 @@ body {
   transform: scale(1) translateY(0);
 }
 .fade-in-section {
-  box-shadow: 0 3px 22px 0 rgba(0, 54, 84, 0.09);
+  box-shadow: 0 3px 22px 0 rgba(0, 33, 71, 0.09);
   background: linear-gradient(120deg, #fbfdff 85%, #e7edfa 100%);
   animation: floatUp 1.2s ease;
 }
@@ -109,8 +110,8 @@ body {
   background: #fff;
   border-radius: 18px;
   padding: 36px 26px 32px 26px;
-  /* Slightly softer base shadow */
-  box-shadow: 0 5px 25px rgba(0, 26, 51, 0.12);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* Sharper, deeper shadow */
+  border: 1px solid #e0e6ec; /* Subtle border */
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     box-shadow 0.3s ease-out;
   box-sizing: border-box;
@@ -128,10 +129,8 @@ body {
 /* Advanced Effect: Blue Glow on Hover */
 .section:hover,
 .section:focus-within {
-  transform: translateY(-5px) scale(1.01); /* More pronounced lift */
-  /* Blue outer glow */
-  box-shadow: 0 15px 45px 5px rgba(0, 26, 51, 0.25),
-    0 0 10px 0px #0078d780; /* Added blue glow effect */
+  transform: translateY(-3px) scale(1.005); 
+  box-shadow: 0 12px 35px 5px rgba(0, 0, 0, 0.18);
 }
 
 .section::after {
@@ -149,8 +148,9 @@ body {
 
 /* Header in section */
 h2 {
-  color: #004e92;
-  border-bottom: 2px solid #e3eaff;
+  /* PROFESSIONAL DARK ACCENT */
+  color: #002147; 
+  border-bottom: 2px solid #e0e6ec;
   padding-bottom: 10px;
   margin-bottom: 21px;
   font-size: 1.23rem;
@@ -167,8 +167,8 @@ h2 {
 label {
   display: flex;
   flex-direction: column;
-  font-weight: 500;
-  color: #183c65;
+  font-weight: 600; /* Bolder label */
+  color: #34495e; /* Darker, formal gray */
 }
 
 /* Advanced Input Focus Glow */
@@ -176,12 +176,12 @@ input,
 textarea,
 select {
   margin-top: 6px;
-  padding: 11px;
-  border-radius: 7px;
-  border: 1px solid #bfd5eb;
+  padding: 12px; /* Slightly larger padding */
+  border-radius: 5px;
+  border: 1px solid #c9d4e1;
   font-size: 1rem;
   outline: none;
-  box-shadow: 0 1px 5px 0px #e4eaf7;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle inner shadow for depth */
   transition: border-color 0.22s, box-shadow 0.17s;
   color: #1a1a1a; /* Darker text for better contrast */
   font-weight: 500;
@@ -189,18 +189,19 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #0078d7; /* Primary blue border */
-  /* Bolder, deeper focus glow */
-  box-shadow: 0 0 0 4px #0078d73a;
+  /* Clean, formal focus blue */
+  border-color: #004e92; 
+  box-shadow: 0 0 0 3px #004e923a;
 }
 
 /* Button with ripple effect and gradient bg */
 .pay-btn,
 .submit-btn {
-  background: linear-gradient(95deg, #0078d7 70%, #0099d7 100%);
+  /* Formal Navy Gradient */
+  background: linear-gradient(95deg, #004e92 70%, #0066b2 100%); 
   color: #fff;
-  padding: 13px 21px;
-  border-radius: 7px;
+  padding: 14px 21px; 
+  border-radius: 5px;
   border: none;
   cursor: pointer;
   margin-top: 12px;
@@ -208,16 +209,16 @@ select:focus {
   letter-spacing: 0.7px;
   font-size: 1rem;
   outline: none;
-  box-shadow: 0 4px 15px 0 #0078d740; /* Stronger button shadow */
+  box-shadow: 0 4px 15px 0 #004e9250;
   position: relative;
   overflow: hidden;
   transition: background 0.24s, transform 0.19s, box-shadow 0.2s;
 }
 .pay-btn:hover,
 .submit-btn:hover {
-  background: linear-gradient(96deg, #005bb5 68%, #008cff 100%);
-  transform: translateY(-2px); /* Slight lift on hover */
-  box-shadow: 0 6px 18px 0 #0078d760;
+  background: linear-gradient(96deg, #003e75 68%, #005aa0 100%);
+  transform: translateY(-1px); 
+  box-shadow: 0 5px 16px 0 #004e9280;
 }
 
 .pay-btn:disabled,
@@ -261,9 +262,9 @@ select:focus {
   text-align: center;
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #e1eaf7;
+  border: 1px solid #c9d4e1;
   border-radius: 10px;
-  background: #f7faff;
+  background: #fcfdfe;
 }
 .payment-options-row {
   display: flex;
@@ -276,7 +277,7 @@ select:focus {
   border: none;
   border-radius: 8px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -286,20 +287,20 @@ select:focus {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
+/* QR Button */
 .method-btn:nth-child(1) {
-  /* PayPal QR - Blue outline style */
   background: #fff;
-  color: #004e92;
-  border: 2px solid #0078d7;
+  color: #34495e;
+  border: 1px solid #c9d4e1;
 }
 .method-btn:nth-child(1):hover {
-  background: #eaf6ff;
+  background: #f8f8f8;
 }
 .paypal-btn-style {
-  /* PayPal Button - Official style */
+  /* PayPal's official gold/yellow for payment finalization */
   background: #ffc439;
   color: #1a1f29;
-  box-shadow: 0 2px 10px #ffc43980;
+  box-shadow: 0 4px 15px #ffc43980;
 }
 .paypal-btn-style:hover {
   background: #f7b825;
@@ -337,9 +338,9 @@ select:focus {
 
 /* NEW: Container for PayPal SDK Buttons */
 .paypal-sdk-container {
-  margin: 10px auto;
+  margin: 25px auto 15px auto; /* More spacing around the button */
   width: 100%;
-  max-width: 300px; /* Standard PayPal button width */
+  max-width: 320px; /* Standard PayPal button width */
 }
 
 .qr-box {
@@ -402,12 +403,12 @@ select:focus {
 
 /* Thank you box animation and color */
 .thank-you-box {
-  background: linear-gradient(98deg, #e7f9ed 90%, #bdffe7 100%);
-  border: 1px solid #c2e7c7;
+  background: linear-gradient(98deg, #e6f7e8 90%, #d8eadc 100%);
+  border: 1px solid #b3d1b9;
   padding: 28px 18px;
   border-radius: 13px;
   text-align: center;
-  color: #2e7d32;
+  color: #1f6b28;
   animation: fadeIn 1s cubic-bezier(0.41, 0.74, 0.41, 1.13);
   margin-top: 18px;
   box-shadow: 0 2px 14px #35f09316;
@@ -430,7 +431,7 @@ select:focus {
 /* FOOTER - full bleed */
 .footer {
   width: 100%;
-  background: linear-gradient(90deg, #000428, #004e92 80%);
+  background: linear-gradient(90deg, #002147, #103358 80%);
   color: #fff;
   text-align: center;
   padding: 17px 0 13px 0;
@@ -438,14 +439,14 @@ select:focus {
   position: relative;
   box-sizing: border-box;
   margin-top: auto;
-  box-shadow: 0 -3px 12px 0 #004e924c;
+  box-shadow: 0 -3px 12px 0 #0021474c;
 }
 
 /* Back button styles */
 .back-btn {
-  background: #fff;
-  color: #0078d7;
-  border: 1.5px solid #b5dafe;
+  background: #f5f7fa; /* Match background for cleaner look */
+  color: #004e92;
+  border: 1px solid #b5c7d8;
   border-radius: 7px;
   padding: 11px 20px;
   margin-right: 9px;
@@ -456,9 +457,9 @@ select:focus {
   box-shadow: 0 2px 7px #74afd80f;
 }
 .back-btn:hover {
-  background: #eaf6ff;
-  color: #004e92;
-  border-color: #0078d7;
+  background: #e6eef5;
+  color: #002147;
+  border-color: #004e92;
   transform: translateY(-1px);
 }
 
@@ -474,15 +475,15 @@ select:focus {
   margin-bottom: 10px;
   font-size: 1.13rem;
   color: #204478;
-  background: #eaf6ff;
+  background: #e6eef5; /* Light blue accent */
   border-radius: 8px;
   padding: 12px 16px;
-  border: 1px solid #aedeff;
+  border: 1px solid #aebac9;
   box-shadow: 0 0 8px 0 #b5e4ff30;
 }
 
 .plan-price {
-  color: #0078d7;
+  color: #004e92; /* Navy blue price */
   font-weight: bold;
   font-size: 1.12em;
 }
@@ -490,7 +491,7 @@ select:focus {
 /* Admin toggle button - custom */
 .admin-toggle-btn {
   background: #fff;
-  color: #004e92;
+  color: #002147;
   border: 1px solid #d0e7ff;
   padding: 10px 14px;
   border-radius: 8px;
@@ -511,7 +512,7 @@ select:focus {
   border: 1px solid #a2c4f7;
   border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 0 12px rgba(0, 78, 146, 0.25);
+  box-shadow: 0 0 12px rgba(0, 33, 71, 0.25);
 }
 
 /* Table display styles for admin view */
@@ -531,7 +532,7 @@ select:focus {
 }
 .table-container thead th {
   background: linear-gradient(90deg, #f4fbff, #eaf6ff);
-  color: #033e66;
+  color: #002147;
   font-weight: 700;
   border-bottom: 2px solid #d7ecff;
 }
@@ -539,7 +540,7 @@ select:focus {
   background: #fbfeff;
 }
 .table-container a {
-  color: #0066cc;
+  color: #004e92;
   text-decoration: none;
 }
 .table-container a:hover {
@@ -547,7 +548,6 @@ select:focus {
 }
 
 @media (max-width: 570px) {
-  /* Removed media query for .choose-pay-box */
   .main-container {
     padding: 22px 2vw 17px 2vw;
   }
@@ -591,9 +591,9 @@ select:focus {
 
 .admin-login-modal h3 {
   margin-top: 0;
-  color: #004e92;
+  color: #002147;
   font-size: 1.5rem;
-  border-bottom: 2px solid #e3eaff;
+  border-bottom: 2px solid #e0e6ec;
   padding-bottom: 10px;
 }
 
@@ -646,9 +646,9 @@ select:focus {
 }
 
 .modal h3 {
-  color: #004e92;
+  color: #002147;
   font-size: 1.4rem;
-  border-bottom: 2px solid #e3eaff;
+  border-bottom: 2px solid #e0e6ec;
   padding-bottom: 10px;
   margin-bottom: 15px;
 }
@@ -697,6 +697,12 @@ select:focus {
 }
 
 @keyframes floatingPulse {
-    0% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0, 26, 51, 0.15); }
-    100% { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 26, 51, 0.25); }
+  0% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); }
+  100% { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25); }
+}
+
+/* glowHover animation for section-step-1 */
+@keyframes glowHover {
+  0% { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); }
+  100% { box-shadow: 0 12px 45px rgba(0, 33, 71, 0.18); }
 }
