@@ -5,15 +5,22 @@ body {
   color: #333;
 }
 
+/* Background Animation: Slower, Smoother Movement */
 .app-bg {
   min-height: 100vh;
   width: 100vw;
+  /* Updated gradient for more depth */
   background: linear-gradient(120deg, #f5f7fa 60%, #e6eeff 100%);
-  animation: bgMove 15s linear infinite alternate;
+  background-size: 200% 200%; /* Make the gradient larger than the viewport */
+  animation: bgMove 25s ease-in-out infinite alternate; /* Slower animation */
 }
 @keyframes bgMove {
-  0% {background-position: left;}
-  100% {background-position: right;}
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 .app-wrapper {
@@ -33,11 +40,17 @@ body {
   padding: 35px 20px 30px 20px;
   box-shadow: 0 4px 24px 0px rgba(0, 0, 0, 0.32);
   position: relative;
-  animation: headerDrop 0.8s cubic-bezier(.23,.71,.58,1.13);
+  animation: headerDrop 0.8s cubic-bezier(0.23, 0.71, 0.58, 1.13);
 }
 @keyframes headerDrop {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .header h1 {
@@ -64,7 +77,7 @@ body {
 .animated-section {
   opacity: 0;
   transform: scale(0.92) translateY(18px);
-  transition: 0.5s cubic-bezier(.22,.59,.68,1.11);
+  transition: 0.5s cubic-bezier(0.22, 0.59, 0.68, 1.11);
 }
 .animated-section.visible {
   opacity: 1;
@@ -72,12 +85,18 @@ body {
 }
 .fade-in-section {
   box-shadow: 0 3px 22px 0 rgba(0, 54, 84, 0.09);
-  background: linear-gradient(120deg,#fbfdff 85%,#e7edfa 100%);
+  background: linear-gradient(120deg, #fbfdff 85%, #e7edfa 100%);
   animation: floatUp 1.2s ease;
 }
 @keyframes floatUp {
-  from { opacity: 0; transform: scale(0.97) translateY(16px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 .single-section {
   width: 100%;
@@ -85,16 +104,34 @@ body {
   margin: 0 auto;
 }
 
-/* SECTIONS BEAUTY */
+/* SECTIONS BEAUTY - UPDATED for advanced effect on Home (Step 1) */
 .section {
   background: #fff;
   border-radius: 18px;
   padding: 36px 26px 32px 26px;
-  box-shadow: 0 7px 30px rgba(0, 26, 51, 0.17);
-  transition: transform 0.25s, box-shadow 0.23s;
+  /* Slightly softer base shadow */
+  box-shadow: 0 5px 25px rgba(0, 26, 51, 0.12);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s ease-out;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  z-index: 1; /* Ensure content is above pseudo elements */
+}
+
+/* Advanced Effect: Floating Card for Step 1 */
+.section-step-1 {
+  /* Added a subtle floating pulse */
+  animation: floatUp 1.2s ease-out, glowHover 3s infinite alternate;
+}
+
+/* Advanced Effect: Blue Glow on Hover */
+.section:hover,
+.section:focus-within {
+  transform: translateY(-5px) scale(1.01); /* More pronounced lift */
+  /* Blue outer glow */
+  box-shadow: 0 15px 45px 5px rgba(0, 26, 51, 0.25),
+    0 0 10px 0px #0078d780; /* Added blue glow effect */
 }
 
 .section::after {
@@ -108,12 +145,6 @@ body {
   background: radial-gradient(circle, #d0e5fb40 23%, #e9e9fb00 100%);
   z-index: 0;
   pointer-events: none;
-}
-
-.section:hover,
-.section:focus-within {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 11px 40px 4px rgba(0, 26, 51, 0.21);
 }
 
 /* Header in section */
@@ -140,7 +171,7 @@ label {
   color: #183c65;
 }
 
-/* Focus in fields glow */
+/* Advanced Input Focus Glow */
 input,
 textarea,
 select {
@@ -152,18 +183,21 @@ select {
   outline: none;
   box-shadow: 0 1px 5px 0px #e4eaf7;
   transition: border-color 0.22s, box-shadow 0.17s;
+  color: #1a1a1a; /* Darker text for better contrast */
+  font-weight: 500;
 }
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: #008cff;
-  box-shadow: 0 0 8px #cde7ff;
+  border-color: #0078d7; /* Primary blue border */
+  /* Bolder, deeper focus glow */
+  box-shadow: 0 0 0 4px #0078d73a;
 }
 
 /* Button with ripple effect and gradient bg */
 .pay-btn,
 .submit-btn {
-  background: linear-gradient(95deg,#0078d7 70%,#0099d7 100%);
+  background: linear-gradient(95deg, #0078d7 70%, #0099d7 100%);
   color: #fff;
   padding: 13px 21px;
   border-radius: 7px;
@@ -174,14 +208,24 @@ select:focus {
   letter-spacing: 0.7px;
   font-size: 1rem;
   outline: none;
-  box-shadow: 0 3px 12px 0 #0078d720;
+  box-shadow: 0 4px 15px 0 #0078d740; /* Stronger button shadow */
   position: relative;
   overflow: hidden;
-  transition: background .24s, transform .19s;
+  transition: background 0.24s, transform 0.19s, box-shadow 0.2s;
 }
-.pay-btn:hover, .submit-btn:hover {
-  background: linear-gradient(96deg,#005bb5 68%,#008cff 100%);
-  transform: scale(1.04);
+.pay-btn:hover,
+.submit-btn:hover {
+  background: linear-gradient(96deg, #005bb5 68%, #008cff 100%);
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 6px 18px 0 #0078d760;
+}
+
+.pay-btn:disabled,
+.submit-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Ripple micro-interaction */
@@ -189,17 +233,76 @@ select:focus {
   content: "";
   position: absolute;
   display: block;
-  left: 50%; top: 50%;
-  width: 0; height: 0;
-  background: rgba(255,255,255,0.4);
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 100%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   animation: rippleAnim 0.5s linear;
   pointer-events: none;
 }
 @keyframes rippleAnim {
-  from { width: 0; height: 0; opacity: .5; }
-  to { width: 220px; height: 220px; opacity: 0; }
+  from {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  to {
+    width: 220px;
+    height: 220px;
+    opacity: 0;
+  }
+}
+
+/* Step 3: Payment Choice Buttons */
+.payment-choice-card {
+  text-align: center;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #e1eaf7;
+  border-radius: 10px;
+  background: #f7faff;
+}
+.payment-options-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+.method-btn {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.method-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+.method-btn:nth-child(1) {
+  /* PayPal QR - Blue outline style */
+  background: #fff;
+  color: #004e92;
+  border: 2px solid #0078d7;
+}
+.method-btn:nth-child(1):hover {
+  background: #eaf6ff;
+}
+.paypal-btn-style {
+  /* PayPal Button - Official style */
+  background: #ffc439;
+  color: #1a1f29;
+  box-shadow: 0 2px 10px #ffc43980;
+}
+.paypal-btn-style:hover {
+  background: #f7b825;
 }
 
 .plan-details {
@@ -232,6 +335,28 @@ select:focus {
   box-shadow: 0 2px 17px 0 #4feaff16;
 }
 
+.paypal-button-box {
+  margin: 10px auto 6px auto;
+  max-width: 260px;
+}
+.paypal-real-button {
+  background: #ffc439;
+  color: #1a1f29;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 10px 30px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.paypal-logo-text {
+  color: #003087;
+}
+.paypal-logo-brand {
+  color: #009cde;
+}
+
 .qr-box {
   background: #f7faff;
   border: 1.5px solid #a9deff;
@@ -246,14 +371,21 @@ select:focus {
   position: relative;
 }
 .glowing-border {
+  /* Enhanced Glowing Pulse */
   box-shadow: 0 0 15px 0 #4feaff6a, 0 2px 14px #0097a42b;
   border: 2.5px solid #41cfff;
-  animation: glowPulse 1.9s infinite;
+  animation: glowPulse 2.5s infinite alternate ease-in-out; /* Smoother pulse */
 }
 @keyframes glowPulse {
-  0% {box-shadow: 0 0 15px #4feaff8a;}
-  60% {box-shadow: 0 0 7px #4feaff3a;}
-  100% {box-shadow: 0 0 15px #4feaff8a;}
+  0% {
+    box-shadow: 0 0 15px 0 #4feaff8a, 0 2px 14px #0097a42b;
+  }
+  50% {
+    box-shadow: 0 0 8px 0 #4feaff5a, 0 1px 8px #0097a41b;
+  }
+  100% {
+    box-shadow: 0 0 15px 0 #4feaff8a, 0 2px 14px #0097a42b;
+  }
 }
 
 .qr-image {
@@ -291,7 +423,7 @@ select:focus {
   border-radius: 13px;
   text-align: center;
   color: #2e7d32;
-  animation: fadeIn 1s cubic-bezier(.41,.74,.41,1.13);
+  animation: fadeIn 1s cubic-bezier(0.41, 0.74, 0.41, 1.13);
   margin-top: 18px;
   box-shadow: 0 2px 14px #35f09316;
 }
@@ -300,8 +432,14 @@ select:focus {
   font-size: 1.33rem;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* FOOTER - full bleed */
@@ -318,38 +456,6 @@ select:focus {
   box-shadow: 0 -3px 12px 0 #004e924c;
 }
 
-/* New styles you wanted to add or update */
-.choose-pay-box {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 22px;
-}
-.upi-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 17px;
-  text-align: center;
-  animation: floatUp 0.8s ease;
-  background: linear-gradient(106deg, #fff7e6 75%, #e7ffe8 100%);
-  border-radius: 14px;
-  padding: 18px 0 15px 0;
-  box-shadow: 0 2px 16px #f6ea5b05;
-}
-.upi-section ul {
-  margin-left: 0;
-  padding-left: 15px;
-  font-size: 1.02rem;
-  color: #2d4303;
-}
-.upi-section li {
-  margin-bottom: 8px;
-}
-.upi-form input {
-  border: 1px solid #ffe57f;
-}
-
 /* Back button styles */
 .back-btn {
   background: #fff;
@@ -361,13 +467,14 @@ select:focus {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background .21s, color .21s, border .21s;
+  transition: background 0.21s, color 0.21s, border 0.21s, transform 0.1s;
   box-shadow: 0 2px 7px #74afd80f;
 }
 .back-btn:hover {
   background: #eaf6ff;
   color: #004e92;
   border-color: #0078d7;
+  transform: translateY(-1px);
 }
 
 .step-btn-row {
@@ -376,8 +483,6 @@ select:focus {
   justify-content: flex-end;
   margin-top: 10px;
 }
-
-/* REMOVED .dropdown-wrapper AND .plan-dropdown STYLES TO USE SIMPLE SELECT */
 
 .plan-amount-box {
   margin-top: 15px;
@@ -406,7 +511,7 @@ select:focus {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: background 0.3s ease;
 }
 .admin-toggle-btn:hover {
@@ -421,11 +526,13 @@ select:focus {
   border: 1px solid #a2c4f7;
   border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 0 12px rgba(0,78,146,0.25);
+  box-shadow: 0 0 12px rgba(0, 78, 146, 0.25);
 }
 
 /* Table display styles for admin view */
-.table-container { overflow-x: auto; }
+.table-container {
+  overflow-x: auto;
+}
 .table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -438,20 +545,24 @@ select:focus {
   text-align: left;
 }
 .table-container thead th {
-  background: linear-gradient(90deg,#f4fbff,#eaf6ff);
+  background: linear-gradient(90deg, #f4fbff, #eaf6ff);
   color: #033e66;
   font-weight: 700;
   border-bottom: 2px solid #d7ecff;
 }
-.table-container tbody tr:hover { background: #fbfeff; }
-.table-container a { color: #0066cc; text-decoration: none; }
-.table-container a:hover { text-decoration: underline; }
+.table-container tbody tr:hover {
+  background: #fbfeff;
+}
+.table-container a {
+  color: #0066cc;
+  text-decoration: none;
+}
+.table-container a:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 570px) {
-  .choose-pay-box {
-    gap: 8px;
-    flex-direction: column;
-  }
+  /* Removed media query for .choose-pay-box */
   .main-container {
     padding: 22px 2vw 17px 2vw;
   }
@@ -462,5 +573,145 @@ select:focus {
   .section {
     padding: 15px 4vw;
   }
-  .qr-image { width: 110px; height: 110px;}
+  .qr-image {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* Admin Login Modal Styles */
+.admin-login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-login-modal {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: modalPop 0.3s ease-out;
+}
+
+.admin-login-modal h3 {
+  margin-top: 0;
+  color: #004e92;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #e3eaff;
+  padding-bottom: 10px;
+}
+
+.admin-login-modal input {
+  width: calc(100% - 22px);
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.login-error {
+  color: crimson;
+  font-weight: 500;
+  margin-top: 15px;
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Payment Verification Modal Styles */
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001; /* Higher than admin login */
+}
+
+.modal {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  max-width: 450px;
+  width: 90%;
+  animation: modalPop 0.3s ease-out;
+  text-align: left;
+}
+
+.modal h3 {
+  color: #004e92;
+  font-size: 1.4rem;
+  border-bottom: 2px solid #e3eaff;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.modal p {
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.confirm-btn {
+  background: linear-gradient(95deg, #2e7d32 70%, #4caf50 100%);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 100%;
+  /* Inherits submit-btn styles */
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background: linear-gradient(96deg, #205e24 68%, #388e3c 100%);
+}
+
+.confirm-btn:disabled {
+  background: #a5d6a7;
+  cursor: not-allowed;
+}
+
+.close-btn {
+  background: #f4f4f4;
+  color: #555;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.close-btn:hover:not(:disabled) {
+  background: #e0e0e0;
+  color: #222;
+}
+
+/* Add style for the step 1-specific animation (Floating) */
+.section-step-1.visible {
+  animation: floatUp 1.2s ease, floatingPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes floatingPulse {
+    0% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0, 26, 51, 0.15); }
+    100% { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 26, 51, 0.25); }
 }
