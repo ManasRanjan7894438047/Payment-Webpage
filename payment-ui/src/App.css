@@ -335,26 +335,11 @@ select:focus {
   box-shadow: 0 2px 17px 0 #4feaff16;
 }
 
-.paypal-button-box {
-  margin: 10px auto 6px auto;
-  max-width: 260px;
-}
-.paypal-real-button {
-  background: #ffc439;
-  color: #1a1f29;
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding: 10px 30px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.paypal-logo-text {
-  color: #003087;
-}
-.paypal-logo-brand {
-  color: #009cde;
+/* NEW: Container for PayPal SDK Buttons */
+.paypal-sdk-container {
+  margin: 10px auto;
+  width: 100%;
+  max-width: 300px; /* Standard PayPal button width */
 }
 
 .qr-box {

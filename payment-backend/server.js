@@ -109,10 +109,10 @@ function savePayments() {
   }
 }
 
-// SAVE PAYMENT
+// SAVE PAYMENT (Handles both QR proof upload and simulated SDK submission)
 app.post("/api/payments", upload.single("screenshot"), (req, res) => {
   try {
-    const { name, email, address, plan, paymentMethod, upiId, upiRef } =
+    const { name, email, address, plan, paymentMethod, paypalOrderId, confirmed } =
       req.body;
     const file = req.file;
 
@@ -121,18 +121,15 @@ app.post("/api/payments", upload.single("screenshot"), (req, res) => {
         .status(400)
         .json({ ok: false, message: "Missing required fields" });
     }
-
-    if (paymentMethod === "paypal" && !file) {
+    
+    // Validation specific to QR code flow (manual proof)
+    if (paymentMethod === "paypal-qr" && !file) {
       return res
         .status(400)
-        .json({ ok: false, message: "PayPal screenshot required" });
+        .json({ ok: false, message: "PayPal screenshot required for QR payment" });
     }
 
-    if (paymentMethod === "upi" && (!upiId || !upiRef)) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "UPI ID and Reference required" });
-    }
+    const isConfirmed = paymentMethod === 'paypal-button' ? (confirmed === true || confirmed === 'true') : false;
 
     const record = {
       id: Date.now().toString(),
@@ -141,12 +138,11 @@ app.post("/api/payments", upload.single("screenshot"), (req, res) => {
       address,
       plan,
       paymentMethod,
-      upiId: upiId || null,
-      upiRef: upiRef || null,
+      paypalOrderId: paypalOrderId || null,
       screenshotFilename: file ? file.filename : null,
       screenshotUrl: file ? `/uploads/${file.filename}` : null,
       createdAt: new Date().toISOString(),
-      confirmed: false,
+      confirmed: isConfirmed, // Auto-confirm if it's the SDK flow
     };
 
     payments.unshift(record);
